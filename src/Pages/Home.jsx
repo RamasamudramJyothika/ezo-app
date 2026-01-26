@@ -8,14 +8,17 @@ import { Container } from "@mui/material";
 
 function Home() {
   const[selectedCategory, setSelectedCategory] = useState(null);
+  const[search,setSearch] = useState("");
 
   return(
     <>
-    <Header/>
+    <Header search={search} setSearch={setSearch}/>
 
     <Container sx={{marginTop: 4}}>
       {categories.map((category)=>{
-        const categoryProducts = products.filter((product)=>product.categoryId === category.id);
+        const categoryProducts = products.filter((product)=>product.categoryId === category.id
+        && product.name.toLowerCase().includes(search.toLowerCase()));
+        if(categoryProducts.length === 0) return null;
         return(
           <CategorySection
             key={category.id}

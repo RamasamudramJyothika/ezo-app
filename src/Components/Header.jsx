@@ -2,7 +2,7 @@ import React from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import SearchBar from "./SearchBar";
 
-function Header() {
+function Header({search, setSearch}) {
   return (
     <AppBar position="static">
       <Toolbar sx={{ display: "flex" }}>
@@ -14,7 +14,7 @@ function Header() {
         </Box>
 
         <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
-          <SearchBar />
+          <SearchBar value={search} onChange={setSearch}/>
         </Box>
 
         <Box sx={{ flex: 1 }} />
