@@ -5,21 +5,20 @@ import { InputAdornment } from "@mui/material";
 function SearchBar({value, onChange}) {
     return(
         <TextField 
+            fullWidth
             size="medium" 
             variant="outlined"
             placeholder="search..."
             value={value}
             onChange={(e)=> onChange(e.target.value)}
-            sx={{width:260, backgroundColor:"#fff", borderRadius:2}}
+            sx={{backgroundColor:"#fff", borderRadius:3, boxShadow: "0 2px 8px rgba(0,0,0,0,0.8)",}}
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">
-                        <SearchIcon/>
+                        <SearchIcon color="action"/>
                     </InputAdornment>
                 )
-            }}>
-        </TextField>
-
+            }}/>
     )
 }
 export default SearchBar;

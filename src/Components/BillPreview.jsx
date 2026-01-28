@@ -1,45 +1,55 @@
 import React from "react";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import {Card, CardContent, Typography, Box, Button, Divider} from "@mui/material";
 
-function BillPreview({open, onClose, cart, clearCart}){
+function BillPreview({cart, clearCart}){
     const totalAmount = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity, 0
+        (sum, item) => sum + item.price * item.quantity, 
+        0
     );
 
-    const handleConfirm = () => {
-        clearCart();
-        onClose();
-    };
-
     return(
-        <Dialog open={open} onClose={onClose} full maxWidth="sm">
-            <DialogTitle>Bill Preview</DialogTitle>
-            <DialogContent>
-                {cart.length===0 ? (
-                    <Typography>No items in cart</Typography>) : (cart.map(item =>(
+        <Card sx={{boderRadius: 3, boxShadow: 3}}>
+            <CardContent>
+                <Typography variant="h6" mb={2}>
+                    Bill Summary
+                </Typography>
+                {cart.length === 0 ? (
+                    <Typography color="text.secondary">
+                        No items added
+                    </Typography>
+                ) : (
+                    cart.map((item) => (
                         <Box key={item.id} display="flex" justifyContent="space-between" mb={1}>
-                            <Typography>{item.name} * {item.quantity}</Typography>
-                            <Typography>{item.price * item.quantity}</Typography>
+                            <Typography>
+                                {item.name} * {item.quantity}
+                            </Typography>
+                            <Typography>
+                                  ₹{item.price * item.quantity}
+                            </Typography>
                         </Box>
                     ))
                 )}
-                <Box mt={2} display="flex" justifyContent="space-between">
-                    <Typography fontWeight="bold">Total</Typography>
-                    <Typography fontWeight="bold">{totalAmount}</Typography>
-                </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose}>Cancel</Button>
-                    <Button variant="contained" color="success" onClick={handleConfirm}>Confirm Bill</Button>
-                </DialogActions>
-        </Dialog>
 
-    )
-};
+                <Divider sx={{my:2}}/>
+
+                <Box display="flex" justifyContent="space-between">
+                    <Typography fontWeight="bold">Total</Typography>
+                    <Typography fontWeight="bold">₹{totalAmount}</Typography>
+                </Box>
+
+                <Button 
+                    fullWidth
+                    sx={{mt:2}}
+                    variant="contained"
+                    color="success"
+                    disabled={cart.length === 0}
+                    onClick={clearCart}
+                >
+                    Confirm Bill
+                </Button>
+            </CardContent>
+        </Card>
+    );
+}
+
 export default BillPreview;
