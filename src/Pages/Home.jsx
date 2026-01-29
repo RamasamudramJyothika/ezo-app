@@ -11,6 +11,8 @@ function Home() {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState([]);
 
+  const normalizedSearch = search.trim().toLowerCase();
+
   const addToCart = (product) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
@@ -60,7 +62,7 @@ function Home() {
                   product.categoryId === category.id &&
                   product.name
                     .toLowerCase()
-                    .includes(search.toLowerCase())
+                    .includes(normalizedSearch)
               );
 
               if (categoryProducts.length === 0) return null;
@@ -81,10 +83,10 @@ function Home() {
           {/* RIGHT — BILL (controlled width) */}
           <Box
             sx={{
-              width: 360,          // 👈 controlled readable width
+              width: 360,          
               minWidth: 320,
               position: "sticky",
-              top: 90,
+              top: 250,
             }}
           >
             <BillPreview
@@ -99,5 +101,3 @@ function Home() {
 }
 
 export default Home;
-
-

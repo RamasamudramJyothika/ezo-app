@@ -21,10 +21,10 @@ function BillPreview({cart, clearCart}){
                     cart.map((item) => (
                         <Box key={item.id} display="flex" justifyContent="space-between" mb={1}>
                             <Typography>
-                                {item.name} * {item.quantity}
+                                {item.name} * {item.quantity} No
                             </Typography>
                             <Typography>
-                                  ₹{item.price * item.quantity}
+                                  ₹{item.price * item.quantity} 
                             </Typography>
                         </Box>
                     ))

@@ -1,24 +1,40 @@
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import TextField from '@mui/material/TextField';
-import { InputAdornment } from "@mui/material";
-function SearchBar({value, onChange}) {
-    return(
-        <TextField 
-            fullWidth
-            size="medium" 
-            variant="outlined"
-            placeholder="search..."
-            value={value}
-            onChange={(e)=> onChange(e.target.value)}
-            sx={{backgroundColor:"#fff", borderRadius:3, boxShadow: "0 2px 8px rgba(0,0,0,0,0.8)",}}
-            InputProps={{
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <SearchIcon color="action"/>
-                    </InputAdornment>
-                )
-            }}/>
-    )
+import CloseIcon from "@mui/icons-material/Close";
+import TextField from "@mui/material/TextField";
+import { InputAdornment, IconButton } from "@mui/material";
+
+function SearchBar({ value, onChange }) {
+  return (
+    <TextField
+      fullWidth
+      variant="outlined"
+      placeholder="Search..."
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon color="action" />
+          </InputAdornment>
+        ),
+        endAdornment: value && (
+          <InputAdornment
+            position="end"
+            sx={{ pointerEvents: "auto" }} 
+          >
+            <IconButton
+              size="small"
+              onClick={() => onChange("")}
+              sx={{ pointerEvents: "auto" }} 
+            >
+              <CloseIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+      }}
+    />
+  );
 }
+
 export default SearchBar;
