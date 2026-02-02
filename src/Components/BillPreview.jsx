@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, CardContent, Typography, Box, Button, Divider} from "@mui/material";
+import {Card, CardContent, Typography, Box, Button, Divider, CardMedia} from "@mui/material";
 
 function BillPreview({cart, clearCart}){
     const totalAmount = cart.reduce(
@@ -19,10 +19,24 @@ function BillPreview({cart, clearCart}){
                     </Typography>
                 ) : (
                     cart.map((item) => (
-                        <Box key={item.id} display="flex" justifyContent="space-between" mb={1}>
+                        <Box key={item.id} display="flex" alignItems="space-between" mb={1}>
+                            <Box display="flex" alignItems="center" gap={1} flex={1}>
+                            <CardMedia 
+                                component="img"
+                                image={item.image}
+                                alt={item.name}
+                                sx={{
+                                    width: 40,
+                                    height: 40,
+                                    objectFit: "cover",
+                                    borderRadius: 1,
+                                    mr: 1
+                                }}
+                                />
                             <Typography>
                                 {item.name} * {item.quantity} No
                             </Typography>
+                            </Box>
                             <Typography>
                                   ₹{item.price * item.quantity} 
                             </Typography>

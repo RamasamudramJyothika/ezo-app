@@ -5,7 +5,6 @@ const categories = [
   { id: 4, name: "Beverages" },
   { id: 5, name: "Dairy"},
   { id:6, name: "Bakery"},
-  {id:7, name:"Vegetables"}
+  {id:7, name:"Fruits"}
 ];
 export default categories;
-

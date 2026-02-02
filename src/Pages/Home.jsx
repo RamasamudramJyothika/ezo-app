@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import categories from "../Data/categories";
 import products from "../Data/products";
 import SearchBar from "../Components/SearchBar";
@@ -10,8 +10,15 @@ import { Container, Box } from "@mui/material";
 function Home() {
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState([]);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  //const normalizedSearch = search.trim().toLowerCase();
 
-  const normalizedSearch = search.trim().toLowerCase();
+  useEffect(()=>{
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim().toLowerCase())
+    }, 400);
+    return ()=> clearTimeout(timer);
+  },[search]);
 
   const addToCart = (product) => {
     setCart((prev) => {
@@ -62,7 +69,7 @@ function Home() {
                   product.categoryId === category.id &&
                   product.name
                     .toLowerCase()
-                    .includes(normalizedSearch)
+                    .includes(debouncedSearch)
               );
 
               if (categoryProducts.length === 0) return null;
