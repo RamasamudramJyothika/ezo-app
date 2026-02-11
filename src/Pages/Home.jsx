@@ -5,7 +5,7 @@ import SearchBar from "../Components/SearchBar";
 import Header from "../Components/Header";
 import CategorySection from "../Components/CategorySection";
 import BillPreview from "../Components/BillPreview";
-import { Container, Box } from "@mui/material";
+import { Container, Box ,Typography} from "@mui/material";
 
 function Home() {
   const [search, setSearch] = useState("");
@@ -19,6 +19,14 @@ function Home() {
     }, 400);
     return ()=> clearTimeout(timer);
   },[search]);
+
+  const isSearching = debouncedSearch.length > 0;
+
+  const hasSearchResults = 
+    debouncedSearch.length > 0 &&
+    products.some((product)=>
+      product.name.toLowerCase().includes(debouncedSearch)
+  );
 
   const addToCart = (product) => {
     setCart((prev) => {
@@ -63,6 +71,12 @@ function Home() {
         >
           {/* LEFT — PRODUCTS (fluid) */}
           <Box sx={{ flex: 1 }}>
+            {isSearching && !hasSearchResults && (
+              <Typography align="center" sx={{mt:6, color:"gray"}}>
+                No products found
+              </Typography>
+            )}
+
             {categories.map((category) => {
               const categoryProducts = products.filter(
                 (product) =>
@@ -88,7 +102,8 @@ function Home() {
           </Box>
 
           {/* RIGHT — BILL (controlled width) */}
-          <Box
+          {!isSearching && (
+            <Box
             sx={{
               width: 360,          
               minWidth: 320,
@@ -101,6 +116,8 @@ function Home() {
               clearCart={() => setCart([])}
             />
           </Box>
+          )}
+          
         </Box>
       </Container>
     </>
