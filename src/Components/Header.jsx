@@ -1,24 +1,16 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
-import SearchBar from "./SearchBar";
 
-function Header({search, setSearch}) {
+function Header() {
   return (
-    <AppBar position="static">
-      <Toolbar sx={{ display: "flex" }}>
+    <AppBar position="sticky" eleveation={1}>
+      <Toolbar>
         
-        <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
+        <Box sx={{ flex: 1}}>
           <Typography variant="h6" fontWeight="bold">
             Billing App
           </Typography>
         </Box>
-
-        <Box sx={{ flex: 1, display: "flex", justifyContent: "center" }}>
-          <SearchBar value={search} onChange={setSearch}/>
-        </Box>
-
-        <Box sx={{ flex: 1 }} />
-
       </Toolbar>
     </AppBar>
   );

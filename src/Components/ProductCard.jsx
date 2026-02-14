@@ -6,18 +6,31 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 function ProductCard({product, quantity,addToCart, removeFromCart}) {
     return(
-        <Card sx={{width: 180, height:260, display:"flex", flexDirection:"column", justifyContent:"space-between"}}>
-            <CardMedia component="img" image={product.image} alt={product.name} sx={{width:"100%", height:140,objectFit:"contain"}}/>
+        <Card 
+          sx={{
+            width: 190, 
+            height:280, 
+            borderRadius: 3, 
+            boxShadow: 3, 
+            transition: "0.2s",
+            "&:hover": {
+                boxShadow: 6,
+                transform: "translateY(-2px)",
+            }
+            }}
+        >
+
+            <CardMedia component="img" image={product.image} alt={product.name} sx={{height:140,objectFit:"contain", backgroundColor: "#f5f5f5"}}/>
             <CardContent>
                 <Typography variant="subtitle1" fontWeight={"bold"}>{product.name}</Typography>
                 <Typography>₹{product.price}</Typography>
 
-                <Box mt={2} display="flex" alignItems="center" justifyContent="space-between" >
+                <Box mt={2} display="flex" alignItems="center" justifyContent="space-between" sx={{border:"1px solid #ddd", borderRadius:2, px:1}} >
                     <IconButton size="small" onClick={()=>removeFromCart(product)} disabled={quantity === 0}>
                         <RemoveIcon/>
                     </IconButton>
 
-                    <Typography mx={1}>{quantity}</Typography>
+                    <Typography>{quantity}</Typography>
 
                     <IconButton size="small" onClick={()=> addToCart(product)}>
                         <AddIcon/>

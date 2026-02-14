@@ -5,7 +5,7 @@ import { Typography, Grid } from "@mui/material";
 function CategorySection({category,products,cart,addToCart,removeFromCart}) {
     return(
        <>
-        <Typography variant="h6" mt={3} mb={2}>
+        <Typography variant="h6" sx={{mt: 4, mb: 2, fontWeight: "bold"}}>
             {category.name}
         </Typography>
 

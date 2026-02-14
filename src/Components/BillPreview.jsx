@@ -1,45 +1,146 @@
-import React from "react";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import React, { useMemo, useState } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Button,
+  Divider,
+  CardMedia,
+  TextField
+} from "@mui/material";
 
-function BillPreview({open, onClose, cart, clearCart}){
-    const totalAmount = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity, 0
+function BillPreview({ cart = [], clearCart }) {
+  const [discount, setDiscount] = useState("");
+
+  
+  const totalAmount = useMemo(() => {
+    return cart.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
     );
+  }, [cart]);
 
-    const handleConfirm = () => {
-        clearCart();
-        onClose();
-    };
+  
+  const normalizedDiscount = Math.min(Math.max(Number(discount) || 0,0), 100);
 
-    return(
-        <Dialog open={open} onClose={onClose} full maxWidth="sm">
-            <DialogTitle>Bill Preview</DialogTitle>
-            <DialogContent>
-                {cart.length===0 ? (
-                    <Typography>No items in cart</Typography>) : (cart.map(item =>(
-                        <Box key={item.id} display="flex" justifyContent="space-between" mb={1}>
-                            <Typography>{item.name} * {item.quantity}</Typography>
-                            <Typography>{item.price * item.quantity}</Typography>
-                        </Box>
-                    ))
-                )}
-                <Box mt={2} display="flex" justifyContent="space-between">
-                    <Typography fontWeight="bold">Total</Typography>
-                    <Typography fontWeight="bold">{totalAmount}</Typography>
-                </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose}>Cancel</Button>
-                    <Button variant="contained" color="success" onClick={handleConfirm}>Confirm Bill</Button>
-                </DialogActions>
-        </Dialog>
+  const discountAmount = useMemo(() => {
+    return totalAmount * (normalizedDiscount / 100);
+  }, [totalAmount, normalizedDiscount]);
 
-    )
-};
+  const finalAmount = useMemo(() => {
+    return Math.max(totalAmount - discountAmount, 0);
+  }, [totalAmount, discountAmount]);
+
+  const isCartEmpty = cart.length === 0;
+
+  return (
+    <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
+      <CardContent>
+        <Typography variant="h6" mb={2}>
+          Bill Summary
+        </Typography>
+
+    
+        {isCartEmpty ? (
+          <Typography color="text.secondary">
+            No items added
+          </Typography>
+        ) : (
+          cart.map((item) => (
+            <Box
+              key={item.id}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={1}
+            >
+              <Box display="flex" alignItems="center" gap={1}>
+                <CardMedia
+                  component="img"
+                  image={item.image}
+                  alt={item.name}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    objectFit: "cover",
+                    borderRadius: 1
+                  }}
+                />
+                <Typography variant="body2">
+                  {item.name} × {item.quantity}
+                </Typography>
+              </Box>
+
+              <Typography variant="body2">
+                ₹{(item.price * item.quantity).toFixed(2)}
+              </Typography>
+            </Box>
+          ))
+        )}
+
+        <Divider sx={{ my: 2 }} />
+
+      
+        <Box display="flex" justifyContent="space-between" mb={1}>
+          <Typography>Subtotal</Typography>
+          <Typography>₹{totalAmount.toFixed(2)}</Typography>
+        </Box>
+
+        
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
+          <Typography>Discount (%)</Typography>
+          <TextField
+            type="number"
+            size="small"
+            value={discount}
+            onChange={(e) => setDiscount(e.target.value)}
+            onBlur={()=>{
+              if(discount === "") setDiscount(0);
+            }}
+            inputProps={{ min: 0, max: 100 }}
+            disabled={isCartEmpty}
+            sx={{ width: 90 }}
+          />
+        </Box>
+
+        
+        <Box display="flex" justifyContent="space-between" mb={1}>
+          <Typography color="error">Discount Amount</Typography>
+          <Typography color="error">
+            -₹{discountAmount.toFixed(2)}
+          </Typography>
+        </Box>
+
+        <Divider sx={{ my: 1 }} />
+
+        
+        <Box display="flex" justifyContent="space-between">
+          <Typography fontWeight="bold">
+            Final Amount
+          </Typography>
+          <Typography fontWeight="bold">
+            ₹{finalAmount.toFixed(2)}
+          </Typography>
+        </Box>
+
+        
+        <Button
+          fullWidth
+          sx={{ mt: 2 }}
+          variant="contained"
+          color="success"
+          disabled={isCartEmpty}
+          onClick={()=>{
+            clearCart();
+            setDiscount("");
+          }}
+        >
+          Confirm Bill
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default BillPreview;
